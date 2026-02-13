@@ -103,6 +103,10 @@
         {
           "type": "type_annotation",
           "named": true
+        },
+        {
+          "type": "type_statement",
+          "named": true
         }
       ]
     }
@@ -188,6 +192,10 @@
         {
           "type": "let_statement",
           "named": true
+        },
+        {
+          "type": "type_statement",
+          "named": true
         }
       ]
     }
@@ -257,6 +265,29 @@
     }
   },
   {
+    "type": "type_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "newline",
+          "named": true
+        },
+        {
+          "type": "type_annotation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "\"",
     "named": false
   },
@@ -320,6 +351,10 @@
   {
     "type": "number",
     "named": true
+  },
+  {
+    "type": "type",
+    "named": false
   },
   {
     "type": "type_bool",

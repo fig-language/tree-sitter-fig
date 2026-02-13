@@ -20,6 +20,7 @@ export default grammar({
     _statement: $ => choice(
       $.function_definition,
       $.let_statement,
+      $.type_statement,
       $.comment
     ),
 
@@ -45,6 +46,14 @@ export default grammar({
       optional(seq(":", $.type_annotation)),
       "=",
       $.expression,
+      $.newline
+    ),
+
+    type_statement: $ => seq(
+      "type",
+      $.identifier,
+      "=",
+      $.type_annotation,
       $.newline
     ),
 

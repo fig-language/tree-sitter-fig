@@ -1,6 +1,10 @@
-
 fn main(x: i32, y: i32):
-  let x: u64 = 5
-  let y = 10
+    let x: u64 = 5
+    let y = 10
+
+fn add(a: i32, b: i32) -> i32:
+    a + b
 
 let x = 10
+
+type Integer = i32
