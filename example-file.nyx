@@ -1,0 +1,5 @@
+let y = 10
+
+fn main() -> i32:
+    let x = 0
+let z = 20
