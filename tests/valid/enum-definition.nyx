@@ -1,0 +1,4 @@
+enum Status:
+    Success
+    Failure
+    Pending

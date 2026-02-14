@@ -1,0 +1,8 @@
+namespace outer::inner:
+    struct Data:
+        value: i32
+    enum Type:
+        A = 0
+       B = 1
+    fn process() -> ok:
+        pass

@@ -1,0 +1,18 @@
+interface Database[T]:
+    fn connect(url: string) -> ok
+    fn disconnect() -> ok
+    fn query(sql: string) -> T
+    fn execute(sql: string) -> ok
+    fn begin_transaction() -> ok
+    fn commit() -> ok
+    fn rollback() -> ok
+    fn prepare(sql: string) -> Statement
+    fn insert(table: string, data: T) -> ok
+    fn update(table: string, data: T) -> ok
+    fn delete(table: string, id: i64) -> ok
+    fn select(table: string) -> T
+    fn count(table: string) -> i64
+    fn exists(table: string, id: i64) -> bool
+    fn truncate(table: string) -> ok
+    fn drop(table: string) -> ok
+    fn create_table(table: string, schema: string) -> ok

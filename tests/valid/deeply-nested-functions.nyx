@@ -1,0 +1,12 @@
+fn level1() -> ok:
+    fn level2() -> ok:
+        fn level3() -> ok:
+            fn level4() -> ok:
+                fn level5() -> ok:
+                    let x = 5
+                    const Y = 10
+                    pass
+                pass
+            pass
+        pass
+    pass

@@ -1,0 +1,6 @@
+namespace broken::module:
+    fn first() -> ok:
+        pass
+   fn second() -> ok:
+        pass
+    const VALUE = 10

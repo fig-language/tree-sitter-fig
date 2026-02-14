@@ -1,0 +1,4 @@
+interface Handler[T]:
+    fn process(data: T) -> ok
+   fn validate(data: T) -> bool
+    fn cleanup() -> ok

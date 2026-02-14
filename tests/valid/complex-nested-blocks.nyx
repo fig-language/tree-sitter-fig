@@ -1,0 +1,9 @@
+namespace std::collections:
+    struct Vector[T]:
+        data: *T
+        len: usize
+    fn create_vector() -> ok:
+        pass
+    enum Status:
+        Ok = 0
+        Error = 1

@@ -1,0 +1,4 @@
+namespace outer:
+    namespace inner:
+        fn helper():
+            pass

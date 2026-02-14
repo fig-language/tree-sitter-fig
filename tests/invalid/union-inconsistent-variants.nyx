@@ -1,0 +1,4 @@
+union Result[T]:
+    success: T
+   failure: string
+    pending: bool

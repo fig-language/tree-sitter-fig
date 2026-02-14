@@ -1,0 +1,22 @@
+struct HttpRequest:
+    method: string
+    url: string
+    version: string
+    host: string
+    userAgent: string
+    accept: string
+    acceptLanguage: string
+    acceptEncoding: string
+    connection: string
+    upgradeInsecureRequests: bool
+    cacheControl: string
+    pragma: string
+    referer: string
+    cookie: string
+    authorization: string
+    contentType: string
+    contentLength: u64
+    body: string
+    timestamp: u64
+    remoteAddr: string
+    remotePort: u16

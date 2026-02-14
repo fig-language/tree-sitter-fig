@@ -1,0 +1,4 @@
+fn broken() -> ok:
+    let x = 10
+   let y = 20
+    const Z = 30

@@ -1,0 +1,8 @@
+fn outer() -> ok:
+    fn middle() -> ok:
+        let x = 1
+       let y = 2
+        fn inner() -> ok:
+            pass
+        pass
+    pass

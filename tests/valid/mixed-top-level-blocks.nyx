@@ -1,0 +1,21 @@
+type UserId = u64
+const MAX_USERS = 10000
+let global_counter = 0
+fn initialize() -> ok:
+    pass
+type UserName = string
+struct User:
+    id: UserId
+    name: UserName
+    email: string
+const MIN_AGE = 18
+fn validate_user(user: User) -> bool:
+    pass
+enum UserRole:
+    Admin = 0
+    Moderator = 1
+    User = 2
+let default_role = 2
+interface Validator[T]:
+    fn validate(input: T) -> bool
+const SYSTEM_VERSION = 1

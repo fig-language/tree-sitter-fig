@@ -1,0 +1,9 @@
+fn complex() -> ok:
+    let a = 10
+    fn nested() -> ok:
+       let x = 1
+        let y = 2
+        pass
+    const B = 20
+     let c = 30
+    pass
