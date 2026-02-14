@@ -105,6 +105,10 @@
           "named": true
         },
         {
+          "type": "type_annotation",
+          "named": true
+        },
+        {
           "type": "type_identifier_path",
           "named": true
         }
@@ -1157,6 +1161,10 @@
     "named": false
   },
   {
+    "type": "as",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true
@@ -1208,6 +1216,10 @@
   {
     "type": "number",
     "named": true
+  },
+  {
+    "type": "packed",
+    "named": false
   },
   {
     "type": "pass",

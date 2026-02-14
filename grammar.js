@@ -112,6 +112,7 @@ export default grammar({
     enum_definition: $ => seq(
       "enum",
       $.type_identifier_path,
+      optional(seq("as", $.type_annotation)),
       ":",
       $.newline,
       $.indent,
@@ -144,6 +145,7 @@ export default grammar({
     ),
 
     struct_definition: $ => seq(
+      optional("packed"),
       "struct",
       $.type_identifier_path,
       optional($.generic_parameters),

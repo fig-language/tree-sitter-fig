@@ -13,6 +13,8 @@
 "interface" @keyword
 "namespace" @keyword
 "pass" @keyword
+"as" @keyword
+"packed" @keyword
 ; "if" @keyword
 ; "else" @keyword
 ; "match" @keyword
@@ -26,7 +28,6 @@
 ; "where" @keyword
 ; "mut" @keyword
 ; "pub" @keyword
-; "as" @keyword
 
 
 ; types
