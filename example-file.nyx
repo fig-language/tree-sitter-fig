@@ -5,14 +5,46 @@ fn main[T, U, V](x: i32, y: i32):
     let x: &i32 = 10
     let z: *u32 = 345
     let x: *raw = 389
+    let msg: string = "Hello world!"
+    let special = $"Hello {23}!"
 
 fn add(a: i32, b: i32) -> i32:
-    a + b
+    let something = a + (b / 10) == 10
+
+fn Vector2::add(a: i32) -> i32:
+    let x = 10
+
+fn some_string() -> string:
+    $"Hello {10}!"
 
 let x = 10
 
 type Integer = i32
 type DoubleRaw = **raw
 type Array[T] = SomeOther[T]
+type Vector2::Alpine = i32
+
+enum Dog:
+    BULLFOG = 0
+    POODLE = 10
+    BEAGLE = 20
+
+union std::Either[U, V]:
+    Left: U
+    Right: V
+
+struct Vector[T]:
+    arr: []T
+    len: usize
+
+interface Drawable[T]:
+    fn draw(self) -> ok
+    fn resize(self, width: T, height: T) -> ok
+
+interface Iterator[T]:
+    fn next(self) -> Option[T]
 
 const Hello = true
+
+namespace std::io::println:
+    pass

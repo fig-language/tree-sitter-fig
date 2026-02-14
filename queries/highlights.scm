@@ -7,6 +7,12 @@
 "type" @keyword
 "const" @keyword
 "raw" @keyword
+"enum" @keyword
+"union" @keyword
+"struct" @keyword
+"interface" @keyword
+"namespace" @keyword
+"pass" @keyword
 ; "if" @keyword
 ; "else" @keyword
 ; "match" @keyword
@@ -16,12 +22,8 @@
 ; "return" @keyword
 ; "break" @keyword
 ; "continue" @keyword
-; "struct" @keyword
-; "enum" @keyword
-; "interface" @keyword
 ; "requires" @keyword
 ; "where" @keyword
-; "union" @keyword
 ; "mut" @keyword
 ; "pub" @keyword
 ; "as" @keyword
@@ -45,15 +47,25 @@
 (identifier) @variable
 
 ; functions
-(function_definition
-  (identifier) @function
+(function_signature
+  (identifier_path
+  name: (_) @function
+    )
 )
+(path_segment
+  (identifier) @module
+)
+(type_identifier_path
+  (identifier_path
+    name: (_) @type
+  )
+)
+
 (call_expression
   (identifier) @function.call
 )
-
-(type_statement
-  (identifier) @type
+(parameter
+  (identifier) @variable.parameter
 )
 
 (const_statement
@@ -71,39 +83,57 @@
   (identifier) @type
 )
 
+(enum_variant
+  (identifier) @constant
+)
+
+(union_variant
+  (identifier) @variable.member
+)
+
+(struct_field
+  (identifier) @variable.member
+)
+
+(namespace_definition
+  (identifier_path
+    name: (_) @module
+  )
+)
+
 ; punctuation
 "(" @punctuation.bracket
 ")" @punctuation.bracket
 "[" @punctuation.bracket
 "]" @punctuation.bracket
-; "{" @punctuation.bracket
-; "}" @punctuation.bracket
+"{" @punctuation.bracket
+"}" @punctuation.bracket
 "=" @operator
-; "::" @operator
+"::" @operator
 ":" @punctuation.delimiter
 "," @punctuation.delimiter
 "->" @operator
 ; "=>" @operator
-; "+" @operator
-; "-" @operator
+"+" @operator
+"-" @operator
 "*" @operator
-; "/" @operator
-; "%" @operator
-; "==" @operator
-; "!=" @operator
-; "<" @operator
-; ">" @operator
-; "<=" @operator
-; ">=" @operator
-; "&&" @operator
-; "||" @operator
-; "!" @operator
+"/" @operator
+"%" @operator
+"==" @operator
+"!=" @operator
+"<" @operator
+">" @operator
+"<=" @operator
+">=" @operator
+"&&" @operator
+"||" @operator
+"!" @operator
 "&" @operator
-; "|" @operator
-; "^" @operator
-; "~" @operator
-; "<<" @operator
-; ">>" @operator
+"|" @operator
+"^" @operator
+"~" @operator
+"<<" @operator
+">>" @operator
 ; "+=" @operator
 ; "-=" @operator
 ; "*=" @operator
@@ -120,5 +150,5 @@
 ; literals
 (number) @number
 (string) @string
+(interpolated_string) @string
 (boolean) @boolean
-
