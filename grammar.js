@@ -44,7 +44,6 @@ export default grammar({
     namespace_definition: $ => seq(
       "namespace",
       $.identifier_path,
-      ":",
       $.newline,
       $.indent,
       optional($.whitespace),
@@ -58,7 +57,6 @@ export default grammar({
 
     function_definition: $ => seq(
       $.function_signature,
-      ":",
       $.newline,
       $.indent,
       optional($.where_clause),
@@ -78,6 +76,7 @@ export default grammar({
 
     function_signature: $ => seq(
       "fn",
+      optional("!"),
       $.identifier_path,
       optional($.generic_parameters),
       "(",
@@ -88,13 +87,15 @@ export default grammar({
 
     type_identifier_path: $ => $.identifier_path,
     identifier_path: $ => seq(
-      optional(seq(
-        repeat1(seq($.path_segment, "::")),
-      )),
-      field("name", $.identifier)
+      repeat(seq($.path_segment, "::")),
+      choice(
+        seq($.path_segment, ".", field("name", $.identifier)), // function
+        field("name", $.identifier)                              // namespace
+      )
     ),
 
-    path_segment: $ => choice($.identifier),
+    path_segment: $ => choice($.builtin_namespace, $.identifier),
+    builtin_namespace: $ => choice("std", "core", "alloc"),
 
     let_statement: $ => seq(
       "let",
@@ -136,7 +137,6 @@ export default grammar({
       "enum",
       optional(seq("[", $.type_annotation, "]")),
       $.type_identifier_path,
-      ":",
       $.newline,
       $.indent,
       optional($.requires_clause),
@@ -156,7 +156,6 @@ export default grammar({
       "union",
       $.type_identifier_path,
       optional($.generic_parameters),
-      ":",
       $.newline,
       $.indent,
       optional($.requires_clause),
@@ -179,7 +178,6 @@ export default grammar({
       "struct",
       $.type_identifier_path,
       optional($.generic_parameters),
-      ":",
       $.newline,
       $.indent,
       optional($.requires_clause),
@@ -201,7 +199,6 @@ export default grammar({
       "interface",
       $.type_identifier_path,
       optional($.generic_parameters),
-      ":",
       $.newline,
       $.indent,
       optional($.extends_clause),
@@ -264,8 +261,9 @@ export default grammar({
       $.type_bool,
       $.type_array,
       $.type_ref,
-      $.type_ptr,
+      $.type_const_ptr,
       $.type_ptr_raw,
+      $.type_ptr,
       $.named_path,
     ),
 
@@ -288,8 +286,9 @@ export default grammar({
 
     type_array: $ => seq("[", optional($.expression), "]", $.type_annotation),
     type_ref: $ => seq("&", $.type_annotation),
-    type_ptr: $ => seq("*", $.type_annotation),
+    type_const_ptr: $ => seq("*", "const", $.type_annotation),
     type_ptr_raw: $ => seq("*", "raw"),
+    type_ptr: $ => seq("*", $.type_annotation),
 
     type_u8: $ => "u8",
     type_u16: $ => "u16",
@@ -310,6 +309,7 @@ export default grammar({
     ),
 
     primary_expression: $ => choice(
+      "self",
       $.identifier,
       $.number,
       $.boolean,
@@ -321,9 +321,10 @@ export default grammar({
     postfix_expression: $ => prec.left(12, seq(
       $.primary_expression,
       repeat(choice(
-        seq(".", $.identifier, optional($.generic_arguments)),      // member access
+        seq(".", optional("!"), $.identifier, optional($.generic_arguments)),      // member access
         seq("::", $.identifier, optional($.generic_arguments)),     // namespace/type access
-        seq("(", optional($.arguments), ")") // function call
+        seq(optional("!"), "(", optional($.arguments), ")"), // function call
+        seq("[", $.expression, "]"), // array indexing
       ))
     )),
 

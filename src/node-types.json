@@ -50,6 +50,11 @@
     }
   },
   {
+    "type": "builtin_namespace",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "const_statement",
     "named": true,
     "fields": {},
@@ -812,6 +817,10 @@
       "required": true,
       "types": [
         {
+          "type": "builtin_namespace",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         }
@@ -828,6 +837,10 @@
       "types": [
         {
           "type": "arguments",
+          "named": true
+        },
+        {
+          "type": "expression",
           "named": true
         },
         {
@@ -851,7 +864,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "boolean",
@@ -1086,6 +1099,10 @@
           "named": true
         },
         {
+          "type": "type_const_ptr",
+          "named": true
+        },
+        {
           "type": "type_f32",
           "named": true
         },
@@ -1152,6 +1169,21 @@
           "type": "expression",
           "named": true
         },
+        {
+          "type": "type_annotation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_const_ptr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
         {
           "type": "type_annotation",
           "named": true
@@ -1492,12 +1524,20 @@
     "named": false
   },
   {
+    "type": "alloc",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true
   },
   {
     "type": "const",
+    "named": false
+  },
+  {
+    "type": "core",
     "named": false
   },
   {
@@ -1566,6 +1606,14 @@
   },
   {
     "type": "requires",
+    "named": false
+  },
+  {
+    "type": "self",
+    "named": false
+  },
+  {
+    "type": "std",
     "named": false
   },
   {

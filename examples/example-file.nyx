@@ -1,4 +1,4 @@
-fn main[T, U, V](x: i32, y: i32):
+fn main[T, U, V](x: i32, y: i32)
     let x: u64 = 5
     const PI: f64 = 3.14
     let y = 10
@@ -10,20 +10,30 @@ fn main[T, U, V](x: i32, y: i32):
     let special = $"Hello {23}!"
     io.println(msg)
 
-fn add(a: i32, b: i32) -> i32:
+fn add(a: i32, b: i32) -> i32
     let something = a + (b / 10) == 10
     $"Result is {a.add(b)::C}"
 
-fn Vector2::add(a: i32) -> i32:
-    let x = 10
+fn! Vector2.add(a: &i32)
+    self.x += a
+    self.y += a
 
-fn some_string[T]() -> string:
+struct Ref[T]
+    ptr: *const T
+
+struct MutRef[T]
+    ptr: *T
+
+fn Something::upper_the_string(ref: Ref[string]) -> string
+    ref.to_uppercase()
+
+fn some_string[T]() -> string
     where
         T: Display
         U: Ord + Clone + Hash
     $"Hello {10}!"
 
-fn nop() -> ok:
+fn nop() -> ok
     pass
 
 let x = 10
@@ -33,7 +43,7 @@ type DoubleRaw = **raw
 type Array[T] = SomeOther[T]
 type Vector2::Alpine = i32
 
-enum[u8] Dog:
+enum[u8] Dog
     requires
         Display
         Debug
@@ -41,40 +51,40 @@ enum[u8] Dog:
     POODLE = 10
     BEAGLE = 20
 
-enum[u8] Dog::Color:
+enum[u8] Dog::Color
     BLACK = 0
     BROWN
     WHITE = 2
 
-union std::Either[U, V]:
+union std::Either[U, V]
     requires
         Display
         Debug
     Left: U
     Right: V
 
-struct Vector[T]:
+struct Vector[T]
     arr: []T
     len: usize
 
-packed struct Bits:
+packed struct Bits
     a: u8
     b: u16
     c: u32
 
-interface Drawable[T]:
+interface Drawable[T]
     extends
         Display
         Debug
     fn draw(self: Self) -> ok
     fn resize(self: Self, width: T, height: T) -> ok
 
-interface Iterator[T]:
+interface Iterator[T]
     fn next(self: Self) -> Option[T]
 
 const HELLO_THERE = true
 
-namespace Hello:
+namespace Hello
     pass
 
 let x = 10

@@ -30,6 +30,9 @@
 ; "continue" @keyword
 ; "pub" @keyword
 
+"self" @variable.builtin
+
+(builtin_namespace) @namespace.builtin
 
 ; types
 ; "Self" @type
@@ -51,7 +54,7 @@
 ; functions
 (function_signature
   (identifier_path
-  name: (_) @function
+    (identifier) @function
     )
 )
 (path_segment
@@ -59,7 +62,7 @@
 )
 (type_identifier_path
   (identifier_path
-    name: (_) @type
+    (identifier) @type
   )
 )
 
