@@ -36,7 +36,7 @@
 (builtin_namespace) @namespace.builtin
 
 ; ==============================================================================
-; GENERIC FALLBACK (Must come early so specific rules can override)
+; GENERIC FALLBACK (Least specific - will be overridden by specific patterns)
 ; ==============================================================================
 
 (identifier) @variable
@@ -128,6 +128,7 @@
 )
 
 ; Type part in type-prefixed paths (e.g., Vec in ::Vec[T]::push)
+; These act as both types and namespaces, highlight as @module for consistency
 (function_signature
   (path
     "::"
@@ -136,6 +137,46 @@
         (simple_path
           (path_segment
             (identifier) @module
+          )
+        )
+      )
+    )
+  )
+)
+
+; Type identifiers in pointer types within type-prefixed paths (e.g., T in ::*T::method)
+(function_signature
+  (path
+    "::"
+    (simple_type_annotation
+      (simple_type_ptr
+        (simple_type_annotation
+          (simple_base_type
+            (simple_path
+              (path_segment
+                (identifier) @type
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+; Nested pointer types (e.g., ::*mut T::method)
+(function_signature
+  (path
+    "::"
+    (simple_type_annotation
+      (simple_type_ptr
+        (simple_type_annotation
+          (simple_base_type
+            (simple_path
+              (path_segment
+                (identifier) @type
+              )
+            )
           )
         )
       )

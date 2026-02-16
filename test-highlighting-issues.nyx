@@ -1,30 +1,21 @@
-// Test case 1: Multi-level namespace in function name
-fn core::memory::alloc(size: usize) -> *u8
+// Test highlighting for type-prefixed paths
+
+// Example 1: Pointer type in path - T should be @type
+fn ::*T::add(self: *T, other: *T) -> *T
     pass
 
-// Test case 2: Generic parameters should be @type.definition
-struct HashMap[K, V]
-    data: K[]
-    len: usize
+// Example 2: Generic type in path - Array should be highlighted, T as @type
+fn ::Array[T]::get(self: *Array[T], index: u32) -> T
+    pass
 
-// Test case 3: Interface with extends clause
-interface Drawable[T]
-    extends
-        Display
-        Clone
-    fn draw() -> ok
+// Example 3: Simple generic - Vec should be @module
+fn ::Vec[T]::push(self: *mut Vec[T], item: T)
+    pass
 
-// Test case 4: Where clause with bounds
-impl[T] : Option[T]
-    where
-        T: Display + Clone + Debug
-    fn show(self: *Option[T])
-        pass
+// Example 4: Regular namespaced path - something should be @module
+fn something::add(x: i32, y: i32) -> i32
+    pass
 
-// Test case 5: Requires clause
-enum[u8] Color
-    requires
-        Display
-        Debug
-    Red = 0
-    Blue = 1
+// Example 5: Multi-segment namespace - all intermediates should be @module
+fn std::collections::HashMap::new[K,V]() -> HashMap[K,V]
+    pass
