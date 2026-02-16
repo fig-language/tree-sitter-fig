@@ -22,6 +22,7 @@ export default grammar({
     _statement: $ => choice(
       $.pass_statement,
       $.function_definition,
+      $.function_declaration,
       $.let_statement,
       $.mut_statement,
       $.const_statement,
@@ -46,12 +47,7 @@ export default grammar({
       $.identifier_path,
       $.newline,
       $.indent,
-      optional($.whitespace),
-      $._statement,
-      repeat(seq(
-        $.whitespace,
-        $._statement
-      )),
+      repeat1($._statement),
       $.dedent
     ),
 
@@ -75,8 +71,10 @@ export default grammar({
     ),
 
     function_signature: $ => seq(
+      optional("extern"),
       "fn",
       optional("!"),
+      optional($.generic_parameters),
       $.identifier_path,
       optional($.generic_parameters),
       "(",
@@ -87,13 +85,14 @@ export default grammar({
 
     type_identifier_path: $ => $.identifier_path,
     identifier_path: $ => seq(
-      repeat(seq($.path_segment, "::")),
+      $.type_annotation,
       choice(
-        seq($.path_segment, ".", field("name", $.identifier)), // function
-        field("name", $.identifier)                              // namespace
+        seq("::", field("name", $.identifier)),
+        seq(".", field("name", $.identifier))
       )
     ),
 
+    path_segment_before_dot: $ => choice($.path_segment),
     path_segment: $ => choice($.builtin_namespace, $.identifier),
     builtin_namespace: $ => choice("std", "core", "alloc"),
 
@@ -260,9 +259,7 @@ export default grammar({
       $.type_f64,
       $.type_bool,
       $.type_array,
-      $.type_ref,
-      $.type_const_ptr,
-      $.type_ptr_raw,
+      $.type_slice,
       $.type_ptr,
       $.named_path,
     ),
@@ -284,11 +281,14 @@ export default grammar({
     namespace_path: $ => sep1($.identifier, "::"),
     type_path_segment: $ => choice($.type_annotation),
 
-    type_array: $ => seq("[", optional($.expression), "]", $.type_annotation),
-    type_ref: $ => seq("&", $.type_annotation),
-    type_const_ptr: $ => seq("*", "const", $.type_annotation),
-    type_ptr_raw: $ => seq("*", "raw"),
-    type_ptr: $ => seq("*", $.type_annotation),
+    type_array: $ => seq("[", $.expression, "]", $.type_annotation),
+    type_slice: $ => seq("[", "]", $.type_annotation),
+    type_ptr: $ => seq(
+      optional("?"),
+      "*",
+      optional("mut"),
+      $.type_annotation
+    ),
 
     type_u8: $ => "u8",
     type_u16: $ => "u16",

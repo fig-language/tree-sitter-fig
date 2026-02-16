@@ -76,11 +76,11 @@ interface Drawable[T]
     extends
         Display
         Debug
-    fn draw(self: Self) -> ok
-    fn resize(self: Self, width: T, height: T) -> ok
+    fn draw() -> ok
+    fn resize(width: T, height: T) -> ok
 
 interface Iterator[T]
-    fn next(self: Self) -> Option[T]
+    fn next() -> Option[T]
 
 const HELLO_THERE = true
 

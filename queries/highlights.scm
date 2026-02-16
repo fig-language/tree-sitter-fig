@@ -2,11 +2,11 @@
 (comment) @comment
 
 ; keywords
+"extern" @keyword
 "fn" @keyword
 "let" @keyword
 "type" @keyword
 "const" @keyword
-"raw" @keyword
 "enum" @keyword
 "union" @keyword
 "struct" @keyword
@@ -127,6 +127,7 @@
 "." @operator
 "->" @operator
 ; "=>" @operator
+"?" @operator
 "+" @operator
 "-" @operator
 "*" @operator
