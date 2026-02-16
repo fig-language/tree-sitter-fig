@@ -42,12 +42,18 @@ export default grammar({
       $.struct_definition,
       $.interface_definition,
       $.namespace_definition,
-      $.impl_block,
       $.expression_statement,
       $.comment,
     ),
 
     comment: $ => token(seq("//", /.*/)),
+
+    annotation: $ => seq(
+      "#",
+      field("name", $.identifier),
+      optional(seq("(", sep1($.expression, ","), ")"))
+    ),
+    annotations: $ => repeat1(seq($.annotation, $.newline)),
 
     pass_statement: $ => seq("pass", $.newline),
 
@@ -56,27 +62,12 @@ export default grammar({
     namespace_definition: $ => seq(
       "namespace",
       field("name", $.path),
-      $.newline,
-      $.indent,
-      repeat1($._statement),
-      $.dedent
-    ),
-
-    impl_block: $ => seq(
-      "impl",
-      optional($.generic_parameters),
-      ":",
-      field("type", $.type_annotation),
-      $.newline,
-      $.indent,
-      optional($.where_clause),
-      optional($.whitespace),
-      choice($.function_definition, $.function_declaration),
-      repeat(seq(
-        $.whitespace,
-        choice($.function_definition, $.function_declaration)
+      optional(seq(
+        $.newline,
+        $.indent,
+        repeat1($._statement),
+        $.dedent
       )),
-      $.dedent
     ),
 
     function_definition: $ => seq(
@@ -220,14 +211,16 @@ export default grammar({
       "struct",
       field("name", $.path),
       optional($.generic_parameters),
-      $.newline,
-      $.indent,
-      optional($.requires_clause),
-      optional($.where_clause),
-      optional($.whitespace),
-      $.struct_field,
-      repeat(seq($.whitespace, $.struct_field)),
-      $.dedent
+      optional(seq(
+        $.newline,
+        $.indent,
+        optional($.requires_clause),
+        optional($.where_clause),
+        optional($.whitespace),
+        $.struct_field,
+        repeat(seq($.whitespace, $.struct_field)),
+        $.dedent
+      ))
     ),
 
     struct_field: $ => seq(
@@ -238,17 +231,20 @@ export default grammar({
     ),
 
     interface_definition: $ => seq(
+      optional($.annotations),
       "interface",
       field("name", $.path),
       optional($.generic_parameters),
-      $.newline,
-      $.indent,
-      optional($.extends_clause),
-      optional($.where_clause),
-      optional($.whitespace),
-      $.function_declaration,
-      repeat(seq($.whitespace, $.function_declaration)),
-      $.dedent
+      optional(seq(
+        $.newline,
+        $.indent,
+        optional($.extends_clause),
+        optional($.where_clause),
+        optional($.whitespace),
+        $.function_declaration,
+        repeat(seq($.whitespace, $.function_declaration)),
+        $.dedent
+      ))
     ),
 
     where_clause: $ => seq(
@@ -348,10 +344,12 @@ export default grammar({
         $.type_u16,
         $.type_u32,
         $.type_u64,
+        $.type_usize,
         $.type_i8,
         $.type_i16,
         $.type_i32,
         $.type_i64,
+        $.type_isize,
         $.type_f32,
         $.type_f64,
         $.type_bool,
@@ -375,13 +373,15 @@ export default grammar({
     type_u16: $ => "u16",
     type_u32: $ => "u32",
     type_u64: $ => "u64",
+    type_usize: $ => "usize",
     type_i8: $ => "i8",
     type_i16: $ => "i16",
     type_i32: $ => "i32",
     type_i64: $ => "i64",
+    type_isize: $ => "isize",
     type_f32: $ => "f32",
-    type_f64: $ => "f64",
-    type_bool: $ => "bool",
+    type_f64: $ => "f64", type_bool: $ => "bool",
+
 
     expression: $ => choice(
       $.postfix_expression,

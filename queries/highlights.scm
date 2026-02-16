@@ -20,6 +20,10 @@
 (path_segment (identifier) @module
  (#match? @module "^[a-z]"))
 
+(annotation
+  name: (identifier) @attribute
+)
+
 ; ==============================================================================
 ; KEYWORDS
 ; ==============================================================================
@@ -36,7 +40,6 @@
   "struct"
   "interface"
   "namespace"
-  "impl"
   "pass"
   "packed"
   "where"
@@ -104,10 +107,6 @@
   name: (path
     (path_segment (identifier) @type)))
 
-; Impl block types
-(impl_block
-  type: (type_annotation) @type)
-
 ; ==============================================================================
 ; NAMESPACE DEFINITIONS
 ; ==============================================================================
@@ -170,10 +169,12 @@
   (type_u16)
   (type_u32)
   (type_u64)
+  (type_usize)
   (type_i8)
   (type_i16)
   (type_i32)
   (type_i64)
+  (type_isize)
   (type_f32)
   (type_f64)
   (type_bool)
@@ -225,9 +226,13 @@
   ")"
   "["
   "]"
+] @punctuation.bracket
+
+[
   "{"
   "}"
-] @punctuation.bracket
+  "#"
+] @punctuation.special
 
 ; ==============================================================================
 ; LITERALS

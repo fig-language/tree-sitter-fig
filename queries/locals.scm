@@ -1,7 +1,6 @@
 ; Scopes
 [
   (function_definition)
-  (impl_block)
   (namespace_definition)
   (where_clause)
   (source_file)

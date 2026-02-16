@@ -1,5 +1,50 @@
 [
   {
+    "type": "annotation",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "annotations",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "newline",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "arguments",
     "named": true,
     "fields": {},
@@ -59,6 +104,10 @@
           "named": true
         },
         {
+          "type": "type_isize",
+          "named": true
+        },
+        {
           "type": "type_u16",
           "named": true
         },
@@ -72,6 +121,10 @@
         },
         {
           "type": "type_u8",
+          "named": true
+        },
+        {
+          "type": "type_usize",
           "named": true
         }
       ]
@@ -425,10 +478,6 @@
           "named": true
         },
         {
-          "type": "impl_block",
-          "named": true
-        },
-        {
           "type": "indent",
           "named": true
         },
@@ -559,60 +608,6 @@
     }
   },
   {
-    "type": "impl_block",
-    "named": true,
-    "fields": {
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "type_annotation",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "dedent",
-          "named": true
-        },
-        {
-          "type": "function_declaration",
-          "named": true
-        },
-        {
-          "type": "function_definition",
-          "named": true
-        },
-        {
-          "type": "generic_parameters",
-          "named": true
-        },
-        {
-          "type": "indent",
-          "named": true
-        },
-        {
-          "type": "newline",
-          "named": true
-        },
-        {
-          "type": "where_clause",
-          "named": true
-        },
-        {
-          "type": "whitespace",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "index_suffix",
     "named": true,
     "fields": {},
@@ -644,8 +639,12 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
+        {
+          "type": "annotations",
+          "named": true
+        },
         {
           "type": "dedent",
           "named": true
@@ -827,7 +826,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "comment",
@@ -855,10 +854,6 @@
         },
         {
           "type": "function_definition",
-          "named": true
-        },
-        {
-          "type": "impl_block",
           "named": true
         },
         {
@@ -1283,10 +1278,6 @@
           "named": true
         },
         {
-          "type": "impl_block",
-          "named": true
-        },
-        {
           "type": "interface_definition",
           "named": true
         },
@@ -1343,7 +1334,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "dedent",
@@ -1660,6 +1651,10 @@
     "named": false
   },
   {
+    "type": "#",
+    "named": false
+  },
+  {
     "type": "$\"",
     "named": false
   },
@@ -1813,10 +1808,6 @@
     "named": true
   },
   {
-    "type": "impl",
-    "named": false
-  },
-  {
     "type": "indent",
     "named": true
   },
@@ -1909,6 +1900,10 @@
     "named": true
   },
   {
+    "type": "type_isize",
+    "named": true
+  },
+  {
     "type": "type_u16",
     "named": true
   },
@@ -1922,6 +1917,10 @@
   },
   {
     "type": "type_u8",
+    "named": true
+  },
+  {
+    "type": "type_usize",
     "named": true
   },
   {

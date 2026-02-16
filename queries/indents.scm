@@ -7,7 +7,6 @@
   (enum_definition)
   (interface_definition)
   (namespace_definition)
-  (impl_block)
   (where_clause)
   (requires_clause)
   (extends_clause)
