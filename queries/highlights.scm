@@ -60,14 +60,23 @@
 ] @type.builtin
 
 ; ==============================================================================
-; FUNCTIONS (Capture broadly first)
+; FUNCTIONS (Capture last segment only)
 ; ==============================================================================
 
-; Function names in signatures - captures all path segments initially
+; Function names - last path_segment in function signatures
+; This includes both identifiers and builtin_namespace tokens used as function names
 (function_signature
   (path
     (path_segment
       (identifier) @function
+    )
+  )
+)
+
+(function_signature
+  (path
+    (path_segment
+      (builtin_namespace) @function
     )
   )
 )
@@ -80,15 +89,27 @@
 )
 
 ; ==============================================================================
-; NAMESPACES AND MODULES (Override with more specific rules)
+; NAMESPACES AND MODULES (Override function names for namespace parts)
 ; ==============================================================================
 
-; Namespace segments - any path_segment followed by :: (overrides @function)
-(path
-  (path_segment
-    (identifier) @module
+; In function signatures, all path_segments except the last should be @module
+; This pattern matches path_segments in a path that has multiple segments
+(function_signature
+  (path
+    (path_segment
+      (identifier) @module
+    )
+    (path_segment)
   )
-  "::"
+)
+
+(function_signature
+  (path
+    (path_segment
+      (builtin_namespace) @module
+    )
+    (path_segment)
+  )
 )
 
 ; Namespace definitions
@@ -181,6 +202,37 @@
         (path_segment
           (identifier) @type
         )
+      )
+    )
+  )
+)
+
+; Types in extends clause
+(extends_clause
+  (extension
+    (path
+      (path_segment
+        (identifier) @type
+      )
+    )
+  )
+)
+
+; Types in where clause bounds
+(bound
+  (path
+    (path_segment
+      (identifier) @type
+    )
+  )
+)
+
+; Types in requires clause
+(requires_clause
+  (requirement
+    (path
+      (path_segment
+        (identifier) @type
       )
     )
   )

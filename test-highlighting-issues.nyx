@@ -1,0 +1,30 @@
+// Test case 1: Multi-level namespace in function name
+fn core::memory::alloc(size: usize) -> *u8
+    pass
+
+// Test case 2: Generic parameters should be @type.definition
+struct HashMap[K, V]
+    data: K[]
+    len: usize
+
+// Test case 3: Interface with extends clause
+interface Drawable[T]
+    extends
+        Display
+        Clone
+    fn draw() -> ok
+
+// Test case 4: Where clause with bounds
+impl[T] : Option[T]
+    where
+        T: Display + Clone + Debug
+    fn show(self: *Option[T])
+        pass
+
+// Test case 5: Requires clause
+enum[u8] Color
+    requires
+        Display
+        Debug
+    Red = 0
+    Blue = 1

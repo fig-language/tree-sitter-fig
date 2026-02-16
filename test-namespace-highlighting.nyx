@@ -1,0 +1,35 @@
+// Test namespace highlighting in function names
+
+// Simple function
+fn add(a: i32, b: i32) -> i32
+    pass
+
+// Namespace :: function
+fn std::print(msg: string)
+    pass
+
+// Multi-level namespace :: function
+fn std::io::print(msg: string)
+    pass
+
+// Expected: std and io are @module, print is @function
+fn core::memory::alloc(size: usize) -> *u8
+    pass
+
+// Test struct with generics
+struct Vec[T]
+    data: T[]
+
+// Test interface with generics and extends
+interface Drawable[T]
+    extends
+        Display
+        Clone
+    fn draw() -> ok
+
+// Test function with where clause
+impl[T] Option[T]
+    where
+        T: Display + Clone
+    fn show(self: *Option[T])
+        pass
