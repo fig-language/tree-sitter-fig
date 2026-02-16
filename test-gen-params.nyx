@@ -1,0 +1,5 @@
+fn test[T](x: T)
+    pass
+
+struct Foo[T]
+    x: T

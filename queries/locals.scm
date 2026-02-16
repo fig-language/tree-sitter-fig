@@ -11,16 +11,7 @@
 ; Function definitions
 (function_definition
   (function_signature
-    (path
-      (path_segment
-        (identifier) @local.definition.function))))
-
-; Function definitions with type-prefixed paths
-(function_definition
-  (function_signature
-    (path
-      "::"
-      (simple_type_annotation)
+    name: (simple_path
       (path_segment
         (identifier) @local.definition.function))))
 
@@ -41,44 +32,44 @@
   (identifier) @local.definition.constant)
 
 ; Generic type parameters
-(generic_parameters
+(generic_parameter
   (identifier) @local.definition.type)
 
 ; Type definitions
 (type_statement
-  (path
+  (simple_path
     (path_segment
-      (identifier) @local.definition.type))))
+      (identifier) @local.definition.type)))
 
 ; Struct definitions
 (struct_definition
-  (path
+  (simple_path
     (path_segment
-      (identifier) @local.definition.type))))
+      (identifier) @local.definition.type)))
 
 ; Enum definitions
 (enum_definition
-  (path
+  (simple_path
     (path_segment
-      (identifier) @local.definition.type))))
+      (identifier) @local.definition.type)))
 
 ; Union definitions
 (union_definition
-  (path
+  (simple_path
     (path_segment
-      (identifier) @local.definition.type))))
+      (identifier) @local.definition.type)))
 
 ; Interface definitions
 (interface_definition
-  (path
+  (simple_path
     (path_segment
-      (identifier) @local.definition.type))))
+      (identifier) @local.definition.type)))
 
 ; Namespace definitions
 (namespace_definition
-  (path
+  (simple_path
     (path_segment
-      (identifier) @local.definition.namespace))))
+      (identifier) @local.definition.namespace)))
 
 ; References
 (identifier) @local.reference

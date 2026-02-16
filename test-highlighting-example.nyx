@@ -1,0 +1,25 @@
+namespace core::memory
+
+/// External low-level C functions
+namespace c
+    extern fn! malloc(size: usize) -> *mut u8
+        uses Heap
+    extern fn! free(ptr: *mut u8)
+        uses Heap
+
+/// The Allocator interface
+interface Allocator
+    fn! allocate(self: Self, size: usize) -> *mut u8
+
+// A simple system allocator
+struct SystemAllocator
+    requires
+        Allocator
+    nil: ?*u8
+
+fn! SystemAllocator::allocate(self: Self, size: usize) -> *mut u8
+    uses Heap
+    c::malloc(size)
+
+fn test[T](x: T)
+    pass

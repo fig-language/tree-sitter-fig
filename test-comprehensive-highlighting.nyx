@@ -1,0 +1,23 @@
+// Test function names are @function
+fn main()
+    pass
+
+fn test[T](x: T)
+    pass
+
+fn Foo::method()
+    pass
+
+fn SystemAllocator::allocate[T](self: Self, size: usize) -> *mut u8
+    pass
+
+// Test generic parameters are @type.definition
+struct Vec[T]
+    data: T
+
+interface Comparable[T, U]
+    fn compare(self: Self, other: T) ->  i32
+
+// Test types with generic arguments are @type
+fn use_vec(v: Vec[i32])
+    pass

@@ -7,15 +7,18 @@
 ; IDENTIFIER CONVENTIONS
 ; ==============================================================================
 
+; Generic type parameters (in function/struct/interface/etc definitions)
+(generic_parameter (identifier) @type.definition)
+
 ; All-caps identifiers are constants
 ((identifier) @constant
- (#match? @constant "^[A-Z][A-Z\\d_]*$")
- (#not-has-ancestor? generic_parameter))
+ (#match? @constant "^[A-Z][A-Z\\d_]*$"))
 
+; PascalCase identifiers are types
 ((identifier) @type
   (#match? @type "^[A-Z]"))
 
-; Lowercase identifiers in paths (not at end of function signature) are namespaces
+; Lowercase identifiers in path segments (modules/namespaces)
 (path_segment (identifier) @module
  (#match? @module "^[a-z]"))
 
@@ -71,11 +74,11 @@
 ; Function names - only the LAST path segment in function signatures
 ; This pattern uses anchoring to ensure we only match the final segment
 (function_signature
-  name: (path
+  name: (simple_path
     (path_segment (identifier) @function) .))
 
 (function_signature
-  name: (path
+  name: (simple_path
     (path_segment (builtin_namespace) @function) .))
 
 ; ==============================================================================
@@ -83,7 +86,7 @@
 ; ==============================================================================
 
 (namespace_definition
-  name: (path
+  name: (simple_path
     (path_segment (identifier) @module)))
 
 ; ==============================================================================

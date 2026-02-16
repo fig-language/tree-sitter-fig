@@ -17,11 +17,10 @@ export default grammar({
   extras: $ => [/[ \t]/, $.comment],
 
   conflicts: $ => [
-    // Conflict: In type statements, ambiguity between:
-    //   type Vec[T] = ... (path with generic_arguments vs generic_parameters)
-    // Both are valid: Vec[T] as path with generics, or Vec with [T] as parameters
-    // GLR resolves this acceptably by preferring generic_parameters after path
-    [$.path],
+    // Conflict: In type/function/struct/etc definitions with generic parameters
+    // After the simple_path name, [ could be start of generic_parameters
+    // or could be continuing the path (though simple_path doesn't allow this)
+    [$.simple_path],
     // Conflict: Inside index expressions, identifier could be start of path or primary expression
     [$.path_segment, $.primary_expression],
   ],
@@ -61,7 +60,7 @@ export default grammar({
 
     namespace_definition: $ => seq(
       "namespace",
-      field("name", $.path),
+      field("name", $.simple_path),
       optional(seq(
         $.newline,
         $.indent,
@@ -94,22 +93,19 @@ export default grammar({
       optional("extern"),
       "fn",
       optional("!"),
+      field("name", $.simple_path),
       optional($.generic_parameters),
-      field("name", $.path),
       "(",
       optional($.parameters),
       ")",
       optional(seq("->", $.type_annotation))
     ),
 
-    // Unified path rule that handles all path types:
+    // Path WITH generic arguments for types and expressions
     // - Simple: identifier
     // - Namespaced: std::identifier, core::io::print
     // - With generics: Vec[T], std::Vec[T] (generics at END of path)
     // - Type-prefixed: ::*T::method, ::Vec[T]::something
-    //
-    // KEY CHANGE: Generics moved to path level (not path_segment level)
-    // This eliminates the conflict between generic arguments and array types!
     path: $ => seq(
       choice(
         // Type-prefixed path (must start with ::)
@@ -124,6 +120,19 @@ export default grammar({
       // Generic arguments only at the END of the complete path
       // This eliminates ambiguity with array types like Vec[20]
       optional($.generic_arguments)
+    ),
+
+    // Simple path WITHOUT generic arguments for definition names
+    // Used for function names, struct names, enum names, etc.
+    // Generic parameters are specified separately at the statement level
+    simple_path: $ => choice(
+      // Type-prefixed path (must start with ::)
+      seq("::", $.simple_type_annotation, repeat1(seq("::", $.path_segment))),
+      // Namespaced path or simple identifier
+      seq(
+        $.path_segment,
+        repeat(seq("::", $.path_segment))
+      )
     ),
 
     // Path segment WITHOUT generics (moved to path level)
@@ -160,7 +169,7 @@ export default grammar({
 
     type_statement: $ => seq(
       "type",
-      field("name", $.path),
+      field("name", $.simple_path),
       optional($.generic_parameters),
       "=",
       $.type_annotation,
@@ -170,7 +179,7 @@ export default grammar({
     enum_definition: $ => seq(
       "enum",
       optional(seq("[", $.type_annotation, "]")),
-      field("name", $.path),
+      field("name", $.simple_path),
       $.newline,
       $.indent,
       optional($.requires_clause),
@@ -188,7 +197,7 @@ export default grammar({
 
     union_definition: $ => seq(
       "union",
-      field("name", $.path),
+      field("name", $.simple_path),
       optional($.generic_parameters),
       $.newline,
       $.indent,
@@ -212,14 +221,14 @@ export default grammar({
       seq(
         optional("packed"),
         "struct",
-        field("name", $.path),
+        field("name", $.simple_path),
         optional($.generic_parameters)
       ),
       // Struct with body
       seq(
         optional("packed"),
         "struct",
-        field("name", $.path),
+        field("name", $.simple_path),
         optional($.generic_parameters),
         $.newline,
         $.indent,
@@ -258,14 +267,14 @@ export default grammar({
       seq(
         optional($.annotations),
         "interface",
-        field("name", $.path),
+        field("name", $.simple_path),
         optional($.generic_parameters)
       ),
       // Interface with body
       seq(
         optional($.annotations),
         "interface",
-        field("name", $.path),
+        field("name", $.simple_path),
         optional($.generic_parameters),
         $.newline,
         $.indent,
