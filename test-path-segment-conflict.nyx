@@ -1,0 +1,72 @@
+// Demonstrating the [$.path_segment] conflict
+// The ambiguity: when parser sees "identifier[", what is the [ ?
+
+// ===== CONFLICT SCENARIO 1: Generic vs Array Type =====
+
+// When parsing: Vec[T]
+// Interpretation A: path_segment(Vec) + generic_arguments([T])
+//                   Meaning: "Vec generic with type parameter T"
+//
+// Interpretation B: path_segment(Vec) + array_type([T])  
+//                   Meaning: "Array of Vec with size T"
+//
+// Both are valid parses! The grammar allows both!
+
+let x: Vec[T]
+//     ^^^^^^^
+//     Is [T] part of the path_segment (generics)?
+//     Or is [T] the array postfix from base_type?
+
+// ===== CONFLICT SCENARIO 2: In Complex Types =====
+
+let y: *Vec[T]
+//      ^^^^^^^
+//      Same problem: Vec[T] could be:
+//      - Generic Vec<T>
+//      - Array Vec[T] (array of size T)
+
+// ===== CONFLICT SCENARIO 3: In Function Returns =====
+
+fn create() -> Vec[T]
+//             ^^^^^^^
+//             Ambiguous!
+
+// ===== CONFLICT SCENARIO 4: In Nested Contexts =====
+
+let z: Vec[Vec[T]]
+//     ^^^^^^^^^^^
+//     Outer Vec[...] is ambiguous
+//     Inner Vec[T] is also ambiguous
+
+// ===== THE GRAMMAR RULES CAUSING CONFLICT =====
+
+// Rule 1: path_segment with optional generics
+// path_segment: seq(identifier, optional(generic_arguments))
+//                               ^^^^^^^^ wants to consume [T]
+
+// Rule 2: base_type with optional array postfix  
+// base_type: seq(path, repeat(seq("[", expression, "]")))
+//                             ^^^ also wants to consume [T]
+
+// When parsing "Vec[T]":
+//   Step 1: Parse "Vec" as path_segment
+//   Step 2: See "["... now what?
+//      Option A: It's part of path_segment (generic_arguments)
+//      Option B: It's part of base_type (array postfix)
+//   CONFLICT! Parser can't decide with 1 token lookahead
+
+// ===== REAL-WORLD IMPACT =====
+
+// These would be ambiguous:
+type MyVec = Vec[T]           // Generic or array?
+let arr: Vec[10]              // Generic Vec<10> or array Vec[10]?
+fn process(v: Vec[T]) -> T    // Parameter type ambiguous
+    pass
+
+// ===== KEY INSIGHT =====
+// The conflict exists because TWO rules want to consume "[...]":
+// 1. generic_arguments (in path_segment)
+// 2. array postfix (in base_type)
+//
+// Both are optional, both look at the same token position
+// Both can apply to the same identifier → CONFLICT

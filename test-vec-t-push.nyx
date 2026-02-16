@@ -1,0 +1,14 @@
+// Test: ::Vec[T]::push should work
+
+fn ::Vec[T]::push(self: *mut Vec[T], item: T)
+    pass
+
+fn ::HashMap[K,V]::insert(self: *mut HashMap[K,V], key: K, value: V)
+    pass
+
+fn ::*T::clone(self: *T) -> *T
+    pass
+
+// Also test prefix arrays with generics
+fn process(arr: [10]Vec[T]) -> []Vec[T]
+    pass

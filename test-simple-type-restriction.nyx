@@ -1,0 +1,33 @@
+// Test: What works with simple_type_annotation
+
+// ✅ Type-prefixed with pointer types
+fn ::*T::clone(self: *T) -> *T
+    pass
+
+// ✅ Type-prefixed with generic types
+fn ::Vec[T]::push(self: *mut Vec[T], item: T)
+    pass
+
+// ✅ Type-prefixed with primitive types
+fn ::u32::to_string(self: u32) -> String
+    pass
+
+// ✅ Type-prefixed with pointer to generic
+fn ::*Vec[T]::ptr_clone(self: *Vec[T]) -> *Vec[T]
+    pass
+
+// ✅ Regular namespaced paths still work
+fn std::io::print(msg: String)
+    pass
+
+// ✅ Complex namespaced paths
+fn std::collections::HashMap::new() -> HashMap
+    pass
+
+// ❌ DOES NOT WORK: Type-prefixed with multi-segment type
+// fn ::Vec::Item::method()  // Vec::Item not allowed in simple_type
+//     pass
+
+// But you CAN write it as a regular path:
+fn Vec::Item::method()  // ✅ Works as regular namespaced path
+    pass

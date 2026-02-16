@@ -1,0 +1,48 @@
+// Comprehensive test of prefix arrays + path-level generics
+
+// ===== Type-prefixed paths with generics =====
+fn ::Vec[T]::push(self: *mut Vec[T], item: T)
+    pass
+
+fn ::HashMap[K,V]::insert(key: K, value: V)
+    pass
+
+fn ::*T::clone(self: *T) -> *T
+    pass
+
+// ===== Prefix arrays (NEW syntax) =====
+fn array_basics(arr: [10]u8, slice: []i32) -> [20]f32
+    pass
+
+fn nested_arrays(matrix: [10][20]u8) -> [5][5]i32
+    pass
+
+// ===== Generics with prefix arrays =====
+fn generic_arrays(arr: [10]Vec[T], slice: []HashMap[K,V])
+    pass
+
+// ===== Path-level generics (generics at end) =====
+fn std::collections::HashMap::new[K,V]() -> HashMap[K,V]
+    pass
+
+// ===== Complex combinations =====
+fn process(data: [100]Vec[String]) -> *mut []HashMap[u32,String]
+    pass
+
+// ===== Impl blocks =====
+impl[T] : Vec[T]
+    fn len(self: *Vec[T]) -> u32
+        pass
+    
+    fn capacity(self: *Vec[T]) -> u32
+        pass
+
+impl[K,V] : HashMap[K,V]
+    fn get(self: *HashMap[K,V], key: K) -> V
+        pass
+
+// ===== Type definitions =====
+type IntArray = [100]i32
+type GenericSlice[T] = []T
+type Matrix = [10][20]f32
+type NestedGeneric[T] = Vec[Vec[T]]

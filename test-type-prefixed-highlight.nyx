@@ -1,0 +1,7 @@
+// Test type-prefixed paths for highlighting
+
+fn ::*T::clone(self: *T) -> *T
+    pass
+
+fn ::Vec[T]::push(self: *mut Vec[T], item: T)
+    pass

@@ -1,0 +1,12 @@
+// Test: generics at path level for type-prefixed
+
+fn ::*T::clone(self: *T) -> *T
+    pass
+
+// Generic at END of path (after all segments)
+fn ::Vec::push[T](self: *mut Vec[T], item: T)
+    pass
+
+// Regular generic calls also at end
+fn std::collections::HashMap::new[K,V]() -> HashMap[K,V]
+    pass

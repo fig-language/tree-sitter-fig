@@ -1,0 +1,26 @@
+// Testing prefix array notation with complete statements
+
+// Generic types (no conflict!)
+fn test_generics(x: Vec[T], y: HashMap[K,V]) -> Vec[T]
+    pass
+
+// Prefix array types
+fn test_arrays(arr: [20]u8, slice: []u8) -> [10]i32
+    pass
+
+// Generics with arrays
+fn process(arr_vec: [5]Vec[T]) -> Vec[[10]u8]
+    pass
+
+// Type definitions
+type IntArray = [100]i32
+type GenericSlice[T] = []T
+type Matrix = [10][20]f32
+
+// Impl block with generics
+impl[T] : Vec[T]
+    fn get(self: *Vec[T], index: u32) -> T
+        pass
+    
+    fn set(self: *mut Vec[T], index: u32, value: T)
+        pass

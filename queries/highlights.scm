@@ -60,8 +60,31 @@
 ] @type.builtin
 
 ; ==============================================================================
+; GENERIC PARAMETERS (Must come before general @type rules)
+; ==============================================================================
+
+(generic_parameters
+  (identifier) @type.definition
+)
+
+(type_constraint
+  (identifier) @type.definition
+)
+
+; ==============================================================================
 ; FUNCTIONS (Capture last segment only)
 ; ==============================================================================
+
+; Function names in type-prefixed paths: ::*T::method
+(function_signature
+  (path
+    "::"
+    (simple_type_annotation)
+    (path_segment
+      (identifier) @function
+    )
+  )
+)
 
 ; Function names - last path_segment in function signatures
 ; This includes both identifiers and builtin_namespace tokens used as function names
@@ -91,6 +114,34 @@
 ; ==============================================================================
 ; NAMESPACES AND MODULES (Override function names for namespace parts)
 ; ==============================================================================
+
+; In type-prefixed paths, intermediate path_segments should be @module
+(function_signature
+  (path
+    "::"
+    (simple_type_annotation)
+    (path_segment
+      (identifier) @module
+    )
+    (path_segment)
+  )
+)
+
+; Type part in type-prefixed paths (e.g., Vec in ::Vec[T]::push)
+(function_signature
+  (path
+    "::"
+    (simple_type_annotation
+      (simple_base_type
+        (simple_path
+          (path_segment
+            (identifier) @module
+          )
+        )
+      )
+    )
+  )
+)
 
 ; In function signatures, all path_segments except the last should be @module
 ; This pattern matches path_segments in a path that has multiple segments
@@ -248,14 +299,6 @@
 
 (const_statement
   (identifier) @constant
-)
-
-(generic_parameters
-  (identifier) @type.definition
-)
-
-(type_constraint
-  (identifier) @type.definition
 )
 
 ; ==============================================================================

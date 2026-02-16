@@ -436,6 +436,10 @@
       "required": true,
       "types": [
         {
+          "type": "generic_parameters",
+          "named": true
+        },
+        {
           "type": "parameters",
           "named": true
         },
@@ -849,7 +853,15 @@
       "required": true,
       "types": [
         {
+          "type": "generic_arguments",
+          "named": true
+        },
+        {
           "type": "path_segment",
+          "named": true
+        },
+        {
+          "type": "simple_type_annotation",
           "named": true
         }
       ]
@@ -860,15 +872,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "builtin_namespace",
-          "named": true
-        },
-        {
-          "type": "generic_arguments",
           "named": true
         },
         {
@@ -985,6 +993,122 @@
         },
         {
           "type": "requirement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simple_base_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "simple_path",
+          "named": true
+        },
+        {
+          "type": "type_bool",
+          "named": true
+        },
+        {
+          "type": "type_f32",
+          "named": true
+        },
+        {
+          "type": "type_f64",
+          "named": true
+        },
+        {
+          "type": "type_i16",
+          "named": true
+        },
+        {
+          "type": "type_i32",
+          "named": true
+        },
+        {
+          "type": "type_i64",
+          "named": true
+        },
+        {
+          "type": "type_i8",
+          "named": true
+        },
+        {
+          "type": "type_u16",
+          "named": true
+        },
+        {
+          "type": "type_u32",
+          "named": true
+        },
+        {
+          "type": "type_u64",
+          "named": true
+        },
+        {
+          "type": "type_u8",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simple_path",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "generic_arguments",
+          "named": true
+        },
+        {
+          "type": "path_segment",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simple_type_annotation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "simple_base_type",
+          "named": true
+        },
+        {
+          "type": "simple_type_ptr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simple_type_ptr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "simple_type_annotation",
           "named": true
         }
       ]

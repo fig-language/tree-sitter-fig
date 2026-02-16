@@ -1,0 +1,26 @@
+// Test dot notation in function names
+
+// Should work: Vector2 should be @module, scale should be @function
+fn! Vector2.scale(factor: f32)
+    pass
+
+// Should work: Vector2 should be @module, add should be @function
+fn Vector2.add(other: Vector2) -> Vector2
+    pass
+
+// Should work: std and io should be @module, print should be @function
+fn std::io::print(msg: string)
+    pass
+
+// Mixed: some and thing should be @module, c should be @function
+fn some::thing.c()
+    pass
+
+// Test generic parameters - should be @type.definition
+struct HashMap[K, V]
+    data: K[]
+    len: usize
+
+impl[T, U] : Converter[T, U]
+    fn convert(self: *Converter[T, U], x: T) -> U
+        pass

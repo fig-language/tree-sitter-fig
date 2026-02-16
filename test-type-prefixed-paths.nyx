@@ -1,0 +1,25 @@
+// Test type-prefixed paths
+
+// Type-prefixed function name: ::*T::clone
+fn! ::*T::clone(self: *T) -> *T
+    pass
+
+// Type-prefixed with generics: ::Vec[T]::push
+fn ::Vec[T]::push(self: *mut Vec[T], item: T)
+    pass
+
+// Type-prefixed with namespace: ::std::Vec[T]::len
+fn ::std::Vec[T]::len(self: *Vec[T]) -> usize
+    pass
+
+// Complex type: ::?*mut HashMap[K, V]::insert
+fn ::?*mut HashMap[K, V]::insert(self: ?*mut HashMap[K, V], key: K, value: V)
+    pass
+
+// Regular namespace path still works
+fn std::io::print(msg: string)
+    pass
+
+// Simple function
+fn add(a: i32, b: i32) -> i32
+    pass

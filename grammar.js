@@ -17,7 +17,11 @@ export default grammar({
   extras: $ => [/[ \t]/, $.comment],
 
   conflicts: $ => [
-    [$.path_segment],
+    // Conflict: In type statements, ambiguity between:
+    //   type Vec[T] = ... (path with generic_arguments vs generic_parameters)
+    // Both are valid: Vec[T] as path with generics, or Vec with [T] as parameters
+    // GLR resolves this acceptably by preferring generic_parameters after path
+    [$.path],
   ],
 
   rules: {
@@ -96,6 +100,7 @@ export default grammar({
       optional("extern"),
       "fn",
       optional("!"),
+      optional($.generic_parameters),
       $.path,
       "(",
       optional($.parameters),
@@ -106,16 +111,29 @@ export default grammar({
     // Unified path rule that handles all path types:
     // - Simple: identifier
     // - Namespaced: std::identifier, core::io::print
-    // - With generics: Vec[T], std::Vec[T]
+    // - With generics: Vec[T], std::Vec[T] (generics at END of path)
+    // - Type-prefixed: ::*T::method, ::Vec[T]::something
+    //
+    // KEY CHANGE: Generics moved to path level (not path_segment level)
+    // This eliminates the conflict between generic arguments and array types!
     path: $ => seq(
-      $.path_segment,
-      repeat(seq("::", $.path_segment))
-    ),
-
-    path_segment: $ => seq(
-      choice($.identifier, $.builtin_namespace),
+      choice(
+        // Type-prefixed path (must start with ::)
+        // Uses simple_type_annotation to avoid recursion
+        seq("::", $.simple_type_annotation, repeat1(seq("::", $.path_segment))),
+        // Namespaced path or simple identifier
+        seq(
+          $.path_segment,
+          repeat(seq("::", $.path_segment))
+        )
+      ),
+      // Generic arguments only at the END of the complete path
+      // This eliminates ambiguity with array types like Vec[20]
       optional($.generic_arguments)
     ),
+
+    // Path segment WITHOUT generics (moved to path level)
+    path_segment: $ => choice($.identifier, $.builtin_namespace),
 
     builtin_namespace: $ => choice("std", "core", "alloc"),
 
@@ -274,8 +292,51 @@ export default grammar({
       $.base_type,
     ),
 
+    // Simple type annotation for use in type-prefixed paths
+    // This version doesn't allow multi-segment paths (no ::)
+    // Breaking the recursion: path → simple_type → path_segment (not path)
+    simple_type_annotation: $ => choice(
+      $.simple_type_ptr,
+      $.simple_base_type,
+    ),
+
+    simple_base_type: $ => prec(1, seq(
+      // Prefix array/slice operators (consistent with base_type)
+      repeat(choice(
+        seq("[", $.expression, "]"),  // array: [20]T
+        seq("[", "]")                   // slice: []T
+      )),
+      choice(
+        $.type_u8,
+        $.type_u16,
+        $.type_u32,
+        $.type_u64,
+        $.type_i8,
+        $.type_i16,
+        $.type_i32,
+        $.type_i64,
+        $.type_f32,
+        $.type_f64,
+        $.type_bool,
+        $.simple_path,  // Single segment with optional generics
+      ),
+    )),
+
+    simple_type_ptr: $ => seq(
+      optional("?"),
+      "*",
+      optional("mut"),
+      $.simple_type_annotation
+    ),
+
+    // Simple path: single segment with optional generics (for ::Vec[T]::method)
+    simple_path: $ => seq(
+      $.path_segment,
+      optional($.generic_arguments)
+    ),
+
     base_type: $ => prec(1, seq(
-      // Optional prefix array/slice operators
+      // Optional postfix array/slice operators (moved here to allow paths with generics)
       repeat(choice(
         seq("[", $.expression, "]"),  // array: T[20]
         seq("[", "]")                   // slice: T[]

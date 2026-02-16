@@ -1,0 +1,29 @@
+// Testing prefix array notation
+
+// Generic types (no conflict anymore!)
+let x: Vec[T]
+let y: HashMap[K,V]
+
+// Prefix array types (NEW syntax)
+let arr: [20]u8              // Array of 20 u8s
+let slice: []u8              // Slice of u8
+let matrix: [10][20]u8       // 10x20 matrix
+
+// Generics with arrays
+let arr_vec: [5]Vec[T]       // Array of 5 Vec<T>
+let vec_arr: Vec[[10]u8]     // Vec of [10]u8 arrays
+
+// Pointer to arrays
+let ptr: *[20]u8
+let mut_ptr: *mut []i32
+
+// Function with prefix arrays
+fn process(arr: [10]u8) -> []u8
+    pass
+
+// Type definitions
+type IntArray = [100]i32
+type GenericArray[T] = [50]T
+
+// Complex types
+let complex: *mut [5]Vec[String]
