@@ -232,27 +232,24 @@ export default grammar({
       $.newline
     ),
 
-    struct_definition: $ => choice(
-      // Struct with body
-      seq(
-        optional("packed"),
-        "struct",
-        field("name", $.name_path),
-        optional(seq(
-          $.newline,
-          $.indent,
-          repeat(choice($.requires_clause, $.where_clause)),
-          repeat1($.struct_field),
-          $.dedent
-        ))
-      ),
+    struct_definition: $ => seq(
+      optional("packed"),
+      "struct",
+      field("name", $.name_path),
+      optional($.struct_body)
+    ),
+
+    struct_body: $ => seq(
+      $.newline,
+      $.indent,
+      sep1(choice($.requires_clause, $.where_clause, $.struct_field), $.newline),
+      $.dedent
     ),
 
     struct_field: $ => seq(
       field("name", $.identifier),
       ":",
       $.type_annotation,
-      $.newline
     ),
 
     interface_definition: $ => choice(

@@ -1188,8 +1188,57 @@
       ]
     },
     "struct_definition": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "packed"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "struct"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "name_path"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "struct_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "struct_body": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "newline"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "indent"
+        },
         {
           "type": "SEQ",
           "members": [
@@ -1197,75 +1246,53 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "STRING",
-                  "value": "packed"
+                  "type": "SYMBOL",
+                  "name": "requires_clause"
                 },
                 {
-                  "type": "BLANK"
+                  "type": "SYMBOL",
+                  "name": "where_clause"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "struct_field"
                 }
               ]
             },
             {
-              "type": "STRING",
-              "value": "struct"
-            },
-            {
-              "type": "FIELD",
-              "name": "name",
+              "type": "REPEAT",
               "content": {
-                "type": "SYMBOL",
-                "name": "name_path"
-              }
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "newline"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "indent"
-                    },
-                    {
-                      "type": "REPEAT",
-                      "content": {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "requires_clause"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "where_clause"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "REPEAT1",
-                      "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "newline"
+                  },
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "requires_clause"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "where_clause"
+                      },
+                      {
                         "type": "SYMBOL",
                         "name": "struct_field"
                       }
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "dedent"
-                    }
-                  ]
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+                    ]
+                  }
+                ]
+              }
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dedent"
         }
       ]
     },
@@ -1287,10 +1314,6 @@
         {
           "type": "SYMBOL",
           "name": "type_annotation"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "newline"
         }
       ]
     },
