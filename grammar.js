@@ -145,7 +145,12 @@ export default grammar({
       seq(
         repeat(seq($.segment_with_generics, "::")),
         field("name", $.segment_with_generics)
-      )
+      ),
+      seq(
+        optional(sep1($.segment_with_generics, "::")),
+        ".",
+        field("name", $.path_segment)
+      ),
     ),
     segment_with_generics: $ => seq($.path_segment, optional($.generic_arguments)),
 
