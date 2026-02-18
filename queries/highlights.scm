@@ -41,11 +41,20 @@
   "struct"
   "interface"
   "namespace"
+  "using"
   "pass"
   "packed"
   "where"
   "requires"
   "extends"
+  "for"
+  "while"
+  "in"
+  "return"
+  "as"
+  "if"
+  "elif"
+  "else"
 ] @keyword
 
 ; ==============================================================================
@@ -79,18 +88,37 @@
 ; ==============================================================================
 
 ; Function names - only the LAST path segment in function signatures
+
+; Special function names
+(function_signature
+  (type_name_path
+    name: (path_segment
+            (identifier) @function.builtin
+            (#match? @function.builtin "^(new|from|into)$"))))
+
+(function_signature
+  (type_name_path
+    name: (segment_with_generics
+            (path_segment
+              (identifier) @function.builtin
+              (#match? @function.builtin "^(new|from|into)$")))))
+
 ; This pattern uses anchoring to ensure we only match the final segment
 (function_signature
-  (function_name_path 
+  (type_name_path 
     name: (segment_with_generics
-      (path_segment (identifier) @function ))))
+      (path_segment
+        (identifier) @function 
+        (#not-match? @function "^(new|from|into)$")))))
 
 (function_signature
-  (function_name_path 
-    name: (path_segment (identifier) @function )))
+  (type_name_path 
+    name: (path_segment
+      (identifier) @function
+      (#not-match? @function "^(new|from|into)$"))))
 
 (function_signature
-  (function_name_path
+  (type_name_path
     (path_segment (builtin_namespace) @module) .))
 
 ; ==============================================================================
@@ -114,7 +142,12 @@
 (mut_statement name: (identifier) @variable)
 
 ; Constants
-(const_statement name: (identifier) @constant)
+; (const_statement name: (identifier) @constant)
+(const_statement
+  (type_name_path
+    name: (segment_with_generics
+            (path_segment
+              (identifier) @constant ))))
 
 ; Function parameters
 (parameter name: (identifier) @variable.parameter)
@@ -142,6 +175,7 @@
 ; BUILT-IN VALUES AND TYPES
 ; ==============================================================================
 
+"sizeof" @function.builtin
 "self" @variable.builtin
 ((identifier) @variable.builtin
   (#eq? @variable.builtin "self"))
@@ -162,6 +196,8 @@
   (type_f32)
   (type_f64)
   (type_bool)
+  (type_ok)
+  (type_null)
 ] @type.builtin
 
 ; ==============================================================================

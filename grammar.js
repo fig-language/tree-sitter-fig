@@ -18,7 +18,7 @@ export default grammar({
 
   conflicts: $ => [
     [$.path_segment, $.primary_expression],
-    [$.function_name_path],
+    [$.type_name_path],
   ],
 
   rules: {
@@ -38,6 +38,11 @@ export default grammar({
       $.interface_definition,
       $.namespace_definition,
       $.expression_statement,
+      $.using_statement,
+      $.if_statement,
+      $.for_loop,
+      $.while_loop,
+      $.return_statement,
       $.comment,
     ),
 
@@ -65,6 +70,11 @@ export default grammar({
       )),
     ),
 
+    using_statement: $ => seq(
+      "using",
+      field("name", $.name_path),
+    ),
+
     function_definition: $ => seq(
       $.function_signature,
       $.newline,
@@ -88,7 +98,7 @@ export default grammar({
       "fn",
       optional("!"),
       optional($.generic_parameters),
-      $.function_name_path,
+      $.type_name_path,
       optional(seq("::", $.generic_parameters)),
       "(",
       optional($.parameters),
@@ -131,7 +141,7 @@ export default grammar({
       ),
     ),
 
-    function_name_path: $ => choice(
+    type_name_path: $ => choice(
       // Type-prefixed path (must start with ::)
       seq(
         "::",
@@ -157,6 +167,11 @@ export default grammar({
 
     builtin_namespace: $ => choice("std", "core", "alloc"),
 
+    return_statement: $ => seq(
+      "return",
+      $.expression,
+    ),
+
     let_statement: $ => seq(
       "let",
       field("name", $.identifier),
@@ -177,11 +192,53 @@ export default grammar({
 
     const_statement: $ => seq(
       "const",
-      field("name", $.identifier),
+      optional($.generic_parameters),
+      field("name", $.type_name_path),
       optional(seq(":", $.type_annotation)),
       "=",
       $.expression,
       $.newline
+    ),
+
+    if_statement: $ => choice(
+      seq(
+        "if",
+        field("condition", $.expression),
+        $.if_body,
+        repeat(seq(
+          "elif",
+          field("condition", $.expression),
+          $.if_body
+        )),
+        optional(seq(
+          "else",
+          $.if_body
+        ))
+      ),
+    ),
+    if_body: $ => seq(
+      $.newline,
+      $.indent,
+      repeat1($._statement),
+      $.dedent
+    ),
+
+    for_loop: $ => seq(
+      "for",
+      field("pattern", $.identifier),  // TODO: pattern matching
+      "in",
+      field("iterable", $.expression),
+      optional($.body)
+    ),
+    while_loop: $ => seq(
+      "while",
+      field("condition", $.expression),
+    ),
+    body: $ => seq(
+      $.newline,
+      $.indent,
+      repeat1($._statement),
+      $.dedent
     ),
 
     type_statement: $ => seq(
@@ -348,7 +405,8 @@ export default grammar({
       // Prefix array/slice operators (consistent with base_type)
       repeat(choice(
         seq("[", $.expression, "]"),  // array: [20]T
-        seq("[", "]")                   // slice: []T
+        seq("[", "]"),                  // slice: []T
+        "?"
       )),
       choice(
         $.type_u8,
@@ -362,12 +420,13 @@ export default grammar({
         $.type_f32,
         $.type_f64,
         $.type_bool,
+        $.type_ok,
+        $.type_null,
         $.simple_path,  // Single segment with optional generics
       ),
     )),
 
     simple_type_ptr: $ => seq(
-      optional("?"),
       "*",
       optional("mut"),
       $.simple_type_annotation
@@ -399,6 +458,8 @@ export default grammar({
         $.type_f32,
         $.type_f64,
         $.type_bool,
+        $.type_ok,
+        $.type_null,
         $.path,
       ),
     )),
@@ -427,12 +488,15 @@ export default grammar({
     type_isize: $ => "isize",
     type_f32: $ => "f32",
     type_f64: $ => "f64", type_bool: $ => "bool",
+    type_ok: $ => "ok",
+    type_null: $ => "null",
 
 
     expression: $ => choice(
       $.postfix_expression,
       $.unary_expression,
-      $.binary_expression
+      $.binary_expression,
+      $.as_expression,
     ),
 
     primary_expression: $ => choice(
@@ -442,7 +506,19 @@ export default grammar({
       $.boolean,
       $.string,
       $.interpolated_string,
-      $.parenthesized_expression
+      $.parenthesized_expression,
+      $.sizeof_expression,
+    ),
+
+    sizeof_expression: $ => seq(
+      "sizeof",
+      "(", $.type_annotation, ")"
+    ),
+
+    as_expression: $ => seq(
+      $.expression,
+      "as",
+      $.type_annotation
     ),
 
     postfix_expression: $ => prec.left(12, seq(
