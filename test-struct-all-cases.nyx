@@ -1,0 +1,15 @@
+struct Empty
+
+struct FieldsOnly
+    x: i32
+    y: i64
+
+struct ClauseOnly
+    where
+        T: Display
+
+struct ClauseAndFields
+    where
+        T: Display
+    x: T
+    y: T

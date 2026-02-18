@@ -117,12 +117,13 @@ bool tree_sitter_nyx_external_scanner_scan(void *payload, TSLexer *lexer, const 
     skip(lexer);
   }
   
-  // If no whitespace consumed, check if we're at a non-whitespace character
-  // This means we're at column 0 (indent_length = 0)
+  // If no whitespace consumed, check if we're at a non-whitespace character.
+  // Use get_column() to get the actual column — this handles the case where a
+  // previous DEDENT consumed the leading spaces (mark_end after spaces), so
+  // we land directly at the content character but it may be at column > 0.
   if (!at_line_start && lexer->lookahead != '\n' && lexer->lookahead != '\r' && !lexer->eof(lexer)) {
-    // We're at column 0 with a real character - treat as line start with indent 0
     at_line_start = true;
-    indent_length = 0;
+    indent_length = lexer->get_column(lexer);
   }
   
   // Mark end after consuming whitespace so it's not consumed by extras on error

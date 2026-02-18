@@ -1240,35 +1240,14 @@
           "name": "indent"
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "CHOICE",
+              "type": "SEQ",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "requires_clause"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "where_clause"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "struct_field"
-                }
-              ]
-            },
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "newline"
-                  },
-                  {
+                  "type": "REPEAT1",
+                  "content": {
                     "type": "CHOICE",
                     "members": [
                       {
@@ -1278,15 +1257,85 @@
                       {
                         "type": "SYMBOL",
                         "name": "where_clause"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "struct_field"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "newline"
+                        },
+                        {
+                          "type": "REPEAT",
+                          "content": {
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "whitespace"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "struct_field"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "newline"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "struct_field"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "newline"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "whitespace"
                       },
                       {
                         "type": "SYMBOL",
                         "name": "struct_field"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "newline"
                       }
                     ]
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         },

@@ -242,7 +242,23 @@ export default grammar({
     struct_body: $ => seq(
       $.newline,
       $.indent,
-      sep1(choice($.requires_clause, $.where_clause, $.struct_field), $.newline),
+      choice(
+        // One or more clauses (requires/where), optionally followed by fields
+        seq(
+          repeat1(choice($.requires_clause, $.where_clause)),
+          optional(seq(
+            $.struct_field,
+            $.newline,
+            repeat(seq($.whitespace, $.struct_field, $.newline))
+          ))
+        ),
+        // Fields only (no clauses)
+        seq(
+          $.struct_field,
+          $.newline,
+          repeat(seq($.whitespace, $.struct_field, $.newline))
+        )
+      ),
       $.dedent
     ),
 
