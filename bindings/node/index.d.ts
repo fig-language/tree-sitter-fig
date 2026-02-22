@@ -25,10 +25,10 @@ type NodeInfo =
  *
  * @example
  * import Parser from "tree-sitter";
- * import Nyx from "tree-sitter-nyx";
+ * import Fig from "tree-sitter-fig";
  *
  * const parser = new Parser();
- * parser.setLanguage(Nyx);
+ * parser.setLanguage(Fig);
  */
 declare const binding: {
   /**

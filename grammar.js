@@ -1,5 +1,5 @@
 /**
- * @file Parser for the Nyx programming language
+ * @file Parser for the Fig programming language
  * @author Luca Mezzavilla <lucamezza4@gmail.com>
  * @license MIT
  */
@@ -8,7 +8,7 @@
 // @ts-check
 
 export default grammar({
-  name: "nyx",
+  name: "fig",
 
   word: $ => $.identifier,
 

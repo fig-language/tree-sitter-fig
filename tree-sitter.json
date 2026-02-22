@@ -2,22 +2,22 @@
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
   "grammars": [
     {
-      "name": "nyx",
-      "camelcase": "Nyx",
-      "title": "Nyx",
-      "scope": "source.nyx",
+      "name": "fig",
+      "camelcase": "Fig",
+      "title": "Fig",
+      "scope": "source.fig",
       "file-types": [
-        "nyx"
+        "fig"
       ],
-      "injection-regex": "^nyx$",
-      "class-name": "TreeSitterNyx",
+      "injection-regex": "^fig$",
+      "class-name": "TreeSitterFig",
       "highlights": ["queries/highlights.scm"]
     }
   ],
   "metadata": {
     "version": "0.1.0",
     "license": "MIT",
-    "description": "Parser for the Nyx programming language",
+    "description": "Parser for the Fig programming language",
     "authors": [
       {
         "name": "Luca Mezzavilla",
@@ -26,7 +26,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-nyx",
+      "repository": "https://github.com/tree-sitter/tree-sitter-fig",
       "funding": ""
     }
   },

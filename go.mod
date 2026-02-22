@@ -1,4 +1,4 @@
-module github.com/tree-sitter/tree-sitter-nyx
+module github.com/tree-sitter/tree-sitter-fig
 
 go 1.22
 

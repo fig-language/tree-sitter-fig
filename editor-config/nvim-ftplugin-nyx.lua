@@ -1,11 +1,11 @@
--- Neovim filetype plugin for Nyx
--- Place this file in: ~/.config/nvim/ftplugin/nyx.lua
--- Or in your Neovim config under: after/ftplugin/nyx.lua
+-- Neovim filetype plugin for Fig
+-- Place this file in: ~/.config/nvim/ftplugin/fig.lua
+-- Or in your Neovim config under: after/ftplugin/fig.lua
 
 -- Set comment string for commenting/uncommenting with 'gc' operator
 vim.bo.commentstring = "// %s"
 
--- Additional Nyx-specific settings
+-- Additional Fig-specific settings
 vim.bo.expandtab = true
 vim.bo.shiftwidth = 4
 vim.bo.tabstop = 4

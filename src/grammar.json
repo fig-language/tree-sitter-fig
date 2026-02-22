@@ -1,6 +1,6 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
-  "name": "nyx",
+  "name": "fig",
   "word": "identifier",
   "rules": {
     "source_file": {

@@ -46,7 +46,7 @@ static inline void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
 // ----------------- scanner -----------------
-bool tree_sitter_nyx_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
+bool tree_sitter_fig_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
   Scanner *scanner = (Scanner *)payload;
 
   // Handle queued indents
@@ -332,7 +332,7 @@ bool tree_sitter_nyx_external_scanner_scan(void *payload, TSLexer *lexer, const 
 }
 
 // ----------------- serialization -----------------
-unsigned tree_sitter_nyx_external_scanner_serialize(void *payload, char *buffer) {
+unsigned tree_sitter_fig_external_scanner_serialize(void *payload, char *buffer) {
   Scanner *scanner = (Scanner *)payload;
   if (scanner->indents.size > 127) return 0;
   
@@ -353,7 +353,7 @@ unsigned tree_sitter_nyx_external_scanner_serialize(void *payload, char *buffer)
   return i;
 }
 
-void tree_sitter_nyx_external_scanner_deserialize(void *payload, const char *buffer, unsigned length) {
+void tree_sitter_fig_external_scanner_deserialize(void *payload, const char *buffer, unsigned length) {
   Scanner *scanner = (Scanner *)payload;
   scanner->indents.size = 0;
   scanner->queued_dedent_count = 0;
@@ -387,7 +387,7 @@ void tree_sitter_nyx_external_scanner_deserialize(void *payload, const char *buf
 }
 
 // ----------------- lifecycle -----------------
-void *tree_sitter_nyx_external_scanner_create() {
+void *tree_sitter_fig_external_scanner_create() {
   Scanner *scanner = calloc(1, sizeof(Scanner));
   push_indent(&scanner->indents, 0);
   scanner->queued_dedent_count = 0;
@@ -396,7 +396,7 @@ void *tree_sitter_nyx_external_scanner_create() {
   return scanner;
 }
 
-void tree_sitter_nyx_external_scanner_destroy(void *payload) {
+void tree_sitter_fig_external_scanner_destroy(void *payload) {
   Scanner *scanner = (Scanner *)payload;
   free(scanner->indents.indents);
   free(scanner);

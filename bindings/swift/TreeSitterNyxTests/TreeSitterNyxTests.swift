@@ -1,12 +1,12 @@
 import XCTest
 import SwiftTreeSitter
-import TreeSitterNyx
+import TreeSitterFig
 
-final class TreeSitterNyxTests: XCTestCase {
+final class TreeSitterFigTests: XCTestCase {
     func testCanLoadGrammar() throws {
         let parser = Parser()
-        let language = Language(language: tree_sitter_nyx())
+        let language = Language(language: tree_sitter_fig())
         XCTAssertNoThrow(try parser.setLanguage(language),
-                         "Error loading Nyx grammar")
+                         "Error loading Fig grammar")
     }
 }
